@@ -1,0 +1,269 @@
+// Countdown test2 without switch.cpp : Defines the entry point for the console application.
+//COUNTDOWN PROJECT D O'Connor 
+//
+//NOTE: This project is not completely finished, after days of looking at the same errors that occured while trying to debug, 
+//I decided to eat ice cream, save my progress and I'll pick up where I left off next time I have a brainwave
+
+//Trying to debug after placing a break point at the start of my getOption function gives the following error
+//"Exception thrown at 0x0F29AC51 (ucrtbased.dll) in Countdown test2 without switch.exe: 0xC0000005: Access violation writing location 0x00CB0000.
+//If there is a handler for this exception, the program may be safely continued."
+
+#include "stdafx.h"
+#include <stdio.h>
+#include "string.h"
+#include <stdlib.h>
+#include <time.h>
+
+int readFile(char *fileName);
+int countChar(char *string, char c);
+int findLongestWord();		//findBestWord();
+int returnDictionary();		//findAllWords();
+int getOption();
+
+
+int nwords = 0;
+char dictionary[80000][20];
+
+int main()
+{
+	FILE *fptr;
+	char fileName[] = "C:\\Users\\user1\\Documents\\Webster.txt";
+	int choice;
+	fptr = fopen(fileName, "r");
+
+	readFile(fileName);
+	int countChar(char *string, char c);	//gives the number of words in the text file, called in readFile function
+	int getOption();
+	choice = getOption();					        //function to give out the users random letters
+	int returnDictionary();				      	//function to take in users letters and return all possible words in the dictionary given the users letters
+	
+	int findLongestWord();			      		//gives back the longest word in the webster text file given the letters enerated in getOption();
+
+	if (!readFile(fileName))
+	{
+		printf("\nFile could not be opened in main!!\n");			//this is only important as a test while compiling, can be taken out before submission!
+		return 0;
+	}
+
+	
+	fclose(fptr);
+}//end main						
+
+
+char str[100];
+char randStr[40];
+
+int readFile(char *fileName)
+{
+//	char fileName[] = "C:\\Users\\user1\\Documents\\Webster.txt";
+//	int getOption();
+	int countChar(char *string, char c);
+	FILE *fptr;
+	fptr = fopen(fileName, "r");
+
+
+	char randChar = rand() % 26 + 'a';
+
+	if (fptr == NULL)
+	{
+		printf("\nCannot open file for reading in readFile fn!\n");
+	}
+	else
+	{
+		while (!feof(fptr))
+		{
+
+			fscanf(fptr, "%s\n", dictionary[nwords]);
+			nwords++;
+		}
+		printf("%ld words read from file\n\n", nwords);
+			fclose(fptr);
+	}
+	return 1;
+}
+
+int returnDictionary()
+{
+	int readFile(char *fileName);
+	int countChar(char *string, char c);
+	int getOption();
+
+	char temp[20];
+	int numMatches = 0;
+	int highestMatch = 0;
+	int i = 0, j = 0, len = 0;
+	int tempCount = 0, wordCount = 0;
+
+	puts("Enter your letters:\n");					//asks user to input their word and this function will find all possible words with those letters
+
+	scanf("%s", temp);
+
+	puts("\n\nMatching Words:\n\n");
+
+	for (i = 0;i<nwords;i++)
+	{
+		numMatches = 0;
+		len = strlen(dictionary[i]);
+
+		for (j = 0;j<len;j++)
+		{
+			tempCount = 0;
+			wordCount = 0;
+			tempCount = countChar(temp, dictionary[i][j]);
+			wordCount = countChar(dictionary[i], dictionary[i][j]);
+			// every letter gets counted once
+			
+			if ((tempCount > 0) && (tempCount == wordCount))
+			{
+				numMatches = numMatches + 1;
+			}
+			else
+			{
+				numMatches = 0;
+				break;
+			}
+		}
+
+
+		if (numMatches == len)
+		{
+			printf("%s\n", dictionary[i]);
+		}
+	}
+
+	return numMatches;
+}
+
+
+int getOption()
+{
+
+	int readFile(char *fileName);
+	int findLongestWord();
+	int returnDictionary();
+
+	int choice = 0;
+	srand(time_t(NULL));
+	char vowelorcon;
+
+	char randomcon[2];
+	randomcon[0] = "BCDFGHJKLMNPQRSTVWXYZ"[rand() % 21];
+	char randomvowel[2];
+	randomvowel[0] = "AEIOU"[rand() % 5];
+	char str[100];
+	char randStr[40];
+
+
+	while (choice != 0)
+	{
+		puts("\nPlease choose your 8 letters, type 'c' for a consonant and 'v' for vowel\n\n");
+		fflush(stdin);
+		scanf("%d", &choice);
+		for (int i = 0; i < 8; i++) {
+
+			switch (choice)
+			{
+			case 1:
+
+				scanf("%c", &vowelorcon);
+				if (vowelorcon == 'c')
+				{
+
+					strncpy(randStr, &randomcon[0], 1);
+					strcat(str, randStr);
+					break;
+				}
+
+				else if (vowelorcon == 'v')
+				{
+
+					strncpy(randStr, &randomvowel[0], 1);
+					strcat(str, randStr);
+					break;
+				}
+			
+			case 0:
+				printf("Exiting game!");
+				break;
+
+			}//end switch
+
+		}//end for loop
+		
+	}
+	choice = getOption();
+	return choice;
+	printf("Your letters are: %s", *str);			//return string containing 8 letters (consonants or vowels) could not check if this is working as my
+													//programme crashes once it gets to this function adn won't let me debug!!
+}//end getOption();
+
+int countChar(char *string, char c)
+{
+	int readFile(char *fileName);
+		
+		int i = 0;
+		int count = 0;
+		int len = 0;
+//		char string[10];					//realistically i'm only reading in words 8 letters long right? error 'redefinition of parameter string'
+		len = strlen(string);
+
+		for (i = 0; i < len; i++)
+		{
+			if (string[i] == c) count++;
+		}
+
+		return count;
+}
+
+int findLongestWord()
+{
+	int readFile(char *fileName);
+	int countChar(char *string, char c);
+	int getOption();
+
+	char bestFit[20];
+	int numMatches = 0;
+	int highestMatch = 0;
+	int i = 0, j = 0, len = 0;
+	char temp[20];
+	int tempCount = 0, wordCount = 0;
+
+	puts("Enter the letters you have:\n");
+	
+	scanf("%s", temp);
+
+		for (i = 0; i<nwords; i++)
+		{
+		numMatches = 0;
+		len = strlen(dictionary[i]);
+	
+			for (j = 0;j<len;j++)
+			{
+				tempCount = 0;
+				wordCount = 0;
+				int tempCount = countChar(temp, dictionary[i][j]);
+				int wordCount = countChar(dictionary[i], dictionary[i][j]);
+
+	
+				if ((tempCount > 0) && (tempCount == wordCount))
+				{
+					numMatches = numMatches + 1;
+				}
+				else
+				{
+					numMatches = 0;
+					break;
+				}
+			}
+
+		if (numMatches > highestMatch)
+		{
+			strcpy(bestFit, dictionary[i]);
+			highestMatch = numMatches;
+		}
+	}
+
+		printf("Best Fit for '%s' is '%s'  [%d]\n", temp, bestFit, highestMatch);		//finds best word with the letters generated
+
+	return numMatches;
+}
